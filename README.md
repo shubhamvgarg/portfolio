@@ -26,6 +26,7 @@ Visit my Portfolio here - [here](https://sgarg.netlify.app/)
 
 ![image](https://github.com/shubhamvgarg/portfolio/assets/48384772/1a867d2a-3a61-41ef-8e20-58c3df011c3b)
 
+![image](https://github.com/shubhamvgarg/portfolio/assets/48384772/23d9477f-4c17-41cf-91a2-36b56e23b391)
 
 
 
