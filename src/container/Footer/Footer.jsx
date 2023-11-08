@@ -4,11 +4,13 @@ import { images } from '../../constants';
 import { AppWrap, MotionWrap } from '../../wrapper';
 import { client } from '../../client';
 import './Footer.scss';
+import { motion } from 'framer-motion';
 
 const Footer = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false)
 
   const { username, email, message } = formData;
 
@@ -20,14 +22,23 @@ const Footer = () => {
 
   const handleSubmit = () => {
     setLoading(true);
-
+    setError(false);
     const contact = {
       _type: 'contact',
       name: formData.username,
       email: formData.email,
       message: formData.message,
     };
+    console.log(contact)
+    if(contact.name==undefined||contact.name==''||contact.email==''||contact.message==''){
+      setError(true)
+      setLoading(false);
 
+      setTimeout(() => {
+        setError(false)
+      }, 5000);
+      return;
+    }
     client.create(contact)
       .then(() => {
         setLoading(false);
@@ -53,10 +64,10 @@ const Footer = () => {
       {!isFormSubmitted ? (
         <div className="app__footer-form app__flex">
           <div className="app__flex">
-            <input className="p-text" type="text" placeholder="Your Name" name="username" value={username} onChange={handleChangeInput} />
+            <input className="p-text" type="text" placeholder="Your Name" name="username" value={username} required onChange={handleChangeInput} />
           </div>
           <div className="app__flex">
-            <input className="p-text" type="email" placeholder="Your Email" name="email" value={email} onChange={handleChangeInput} />
+            <input className="p-text" type="email" placeholder="Your Email" name="email" value={email} required onChange={handleChangeInput} />
           </div>
           <div>
             <textarea
@@ -64,10 +75,23 @@ const Footer = () => {
               placeholder="Your Message"
               value={message}
               name="message"
+              required
               onChange={handleChangeInput}
             />
           </div>
           <button type="button" className="p-text" onClick={handleSubmit}>{!loading ? 'Send Message' : 'Sending...'}</button>
+          {
+            error &&
+            <motion.div
+            whileInView={{  scale: [0, 1] }}
+            transition={{ duration: 1 , ease: 'easeInOut'}}
+            >
+
+            <h3 className="head-text">
+            Please fill details properly!
+          </h3>
+            </motion.div>
+          }
         </div>
       ) : (
         <div>
